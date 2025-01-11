@@ -1,5 +1,7 @@
 package com.umc.hackathon.todo.dto;
 
+import com.umc.hackathon.todo.entity.Todo;
+
 import java.time.LocalDateTime;
 
 public record TodoResponse(
@@ -9,4 +11,5 @@ public record TodoResponse(
         boolean status,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
-) {}
+) {
+}
