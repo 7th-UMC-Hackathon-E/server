@@ -44,4 +44,18 @@ public class UserController {
             return ApiResponse.onFailure("LOGIN_FAILED", ex.getMessage(), null);
         }
     }
+    @Operation(summary = "유저 정보", description = "유저 정보 조회")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그인 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
+    })
+    @GetMapping("/detail")
+    public ApiResponse<UserResponseDTO> userDetail(@RequestBody UserRequestDTO userRequestDTO) {
+        try {
+            UserResponseDTO res = userService.GetUserData();
+            return ApiResponse.onSuccess(res);
+        } catch (IllegalArgumentException ex) {
+            return ApiResponse.onFailure("LOGIN_FAILED", ex.getMessage(), null);
+        }
+    }
 }
