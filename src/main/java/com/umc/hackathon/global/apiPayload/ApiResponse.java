@@ -3,7 +3,6 @@ package com.umc.hackathon.global.apiPayload;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.umc.hackathon.global.apiPayload.code.BaseCode;
 import com.umc.hackathon.global.apiPayload.code.status.SuccessStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,10 +24,6 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> onSuccess(T result){
         return new ApiResponse<>(true, SuccessStatus._OK.getCode() , SuccessStatus._OK.getMessage(), result);
     }
-
-//    public static <T> ApiResponse<T> of(BaseCode code, T result){
-//        return new ApiResponse<>(true, code.getReasonHttpStatus().getCode() , code.getReasonHttpStatus().getMessage(), result);
-//    }
 
     public static <T> ApiResponse<T> onSuccess() {
         return new ApiResponse<>(true, SuccessStatus._OK.getCode(), SuccessStatus._OK.getMessage(), null);
