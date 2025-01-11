@@ -19,6 +19,7 @@ public class Review extends BaseEntity {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(nullable = true, length = 100)
@@ -26,11 +27,15 @@ public class Review extends BaseEntity {
 
     private Double progress;
 
-    private Integer totalTodos;
+    private Integer numberAll;
 
-    private Integer completedTodos;
+    private Integer numberDone;
 
     public Review(User user, String content, Double progress, Integer numberAll, Integer numberDone) {
-        super();
+        this.user = user;
+        this.content = content;
+        this.progress = progress;
+        this.numberAll = numberAll;
+        this.numberDone = numberDone;
     }
 }

@@ -46,13 +46,16 @@ public class ReviewCommandService {
 
         reviewRepository.save(review);
 
+
+        System.out.println("Progress = " + userStudy.getProgress());
+
         return new ReviewResponse(
                 review.getId(),
                 user.getUserId(),
                 review.getContent(),
                 review.getProgress(),
-                review.getTotalTodos(),
-                review.getCompletedTodos(),
+                review.getNumberAll(),
+                review.getNumberDone(),
                 review.getCreatedAt(),
                 review.getUpdatedAt()
         );

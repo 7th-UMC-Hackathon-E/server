@@ -7,8 +7,8 @@ public record ReviewResponse(
         Long userId,
         String content,
         Double progress,
-        Integer totalTodos,
-        Integer completedTodos,
+        Integer numberAll,
+        Integer numberDone,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {}
