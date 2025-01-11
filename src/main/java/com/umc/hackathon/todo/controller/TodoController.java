@@ -78,4 +78,20 @@ public class TodoController {
                     .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));
         }
     }
+
+    @Operation(summary = "투두 단일 삭제", description = "특정 ID를 가진 Todo를 삭제합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "투두 삭제 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "투두를 찾을 수 없음")
+    })
+    @DeleteMapping("/{todoId}")
+    public ResponseEntity<ApiResponse<Void>> deleteTodoById(@PathVariable Long todoId) {
+        try {
+            todoCommandService.deleteTodoById(todoId);
+            return ResponseEntity.ok(ApiResponse.onSuccess(null));
+        } catch (TodoNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));
+        }
+    }
 }

@@ -3,9 +3,11 @@ package com.umc.hackathon.todo.service;
 import com.umc.hackathon.todo.dto.TodoRequest;
 import com.umc.hackathon.todo.dto.TodoResponse;
 import com.umc.hackathon.todo.entity.Todo;
+import com.umc.hackathon.todo.exception.TodoNotFoundException;
 import com.umc.hackathon.todo.exception.TodoValidationException;
 import com.umc.hackathon.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TodoCommandService {
@@ -30,5 +32,16 @@ public class TodoCommandService {
 
         return new TodoResponse(savedTodo.getId(), savedTodo.getMemberId(), savedTodo.getDescription(),
                 savedTodo.isStatus(), savedTodo.getCreatedAt(), savedTodo.getUpdatedAt());
+    }
+
+    @Transactional
+    public void deleteTodoById(Long id) {
+        // 삭제할 Todo가 있는지 확인
+        if (!todoRepository.existsById(id)) {
+            throw new TodoNotFoundException("해당 투두를 찾을 수 없습니다.");
+        }
+
+        // Todo 삭제
+        todoRepository.deleteById(id);
     }
 }
