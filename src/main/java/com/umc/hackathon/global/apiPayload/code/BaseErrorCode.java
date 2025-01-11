@@ -1,4 +1,4 @@
-package com.umc.hackathon.apiPayload.code;
+package com.umc.hackathon.global.apiPayload.code;
 
 public interface BaseErrorCode {
 

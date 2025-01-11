@@ -1,7 +1,7 @@
-package com.umc.hackathon.apiPayload.code.status;
+package com.umc.hackathon.global.apiPayload.code.status;
 
-import com.umc.hackathon.apiPayload.code.BaseCode;
-import com.umc.hackathon.apiPayload.code.ReasonDTO;
+import com.umc.hackathon.global.apiPayload.code.BaseCode;
+import com.umc.hackathon.global.apiPayload.code.ReasonDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.umc.hackathon.apiPayload.code;
+package com.umc.hackathon.global.apiPayload.code;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,8 +1,8 @@
-package com.umc.hackathon.apiPayload.exception;
+package com.umc.hackathon.global.apiPayload.exception;
 
-import com.umc.hackathon.apiPayload.ApiResponse;
-import com.umc.hackathon.apiPayload.code.ErrorReasonDTO;
-import com.umc.hackathon.apiPayload.code.status.ErrorStatus;
+import com.umc.hackathon.global.apiPayload.ApiResponse;
+import com.umc.hackathon.global.apiPayload.code.ErrorReasonDTO;
+import com.umc.hackathon.global.apiPayload.code.status.ErrorStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;

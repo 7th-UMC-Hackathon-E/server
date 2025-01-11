@@ -1,7 +1,7 @@
-package com.umc.hackathon.apiPayload.exception;
+package com.umc.hackathon.global.apiPayload.exception;
 
-import com.umc.hackathon.apiPayload.code.BaseErrorCode;
-import com.umc.hackathon.apiPayload.code.ErrorReasonDTO;
+import com.umc.hackathon.global.apiPayload.code.BaseErrorCode;
+import com.umc.hackathon.global.apiPayload.code.ErrorReasonDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
