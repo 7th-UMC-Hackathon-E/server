@@ -2,11 +2,13 @@ package com.umc.hackathon.todo.controller;
 
 import com.umc.hackathon.global.apiPayload.ApiResponse;
 import com.umc.hackathon.todo.dto.TodoListResponse;
+import com.umc.hackathon.todo.dto.TodoProgressResponse;
 import com.umc.hackathon.todo.dto.TodoRequest;
 import com.umc.hackathon.todo.dto.TodoResponse;
 import com.umc.hackathon.todo.exception.TodoNotFoundException;
 import com.umc.hackathon.todo.exception.TodoValidationException;
 import com.umc.hackathon.todo.service.TodoCommandService;
+import com.umc.hackathon.todo.service.TodoProgressService;
 import com.umc.hackathon.todo.service.TodoQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -22,10 +25,12 @@ public class TodoController {
 
     private final TodoCommandService todoCommandService;
     private final TodoQueryService todoQueryService;
+    private final TodoProgressService todoProgressService;
 
-    public TodoController(TodoCommandService todoCommandService, TodoQueryService todoQueryService) {
+    public TodoController(TodoCommandService todoCommandService, TodoQueryService todoQueryService, TodoProgressService todoProgressService) {
         this.todoCommandService = todoCommandService;
         this.todoQueryService = todoQueryService;
+        this.todoProgressService = todoProgressService;
     }
 
     @Operation(summary = "투두 등록", description = "새로운 Todo를 생성합니다.")
@@ -89,6 +94,24 @@ public class TodoController {
         try {
             todoCommandService.deleteTodoById(todoId);
             return ResponseEntity.ok(ApiResponse.onSuccess(null));
+        } catch (TodoNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));
+        }
+    }
+
+    @Operation(summary = "투두 진행도 조회", description = "투두의 진행도를 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "투두 진행도 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "투두를 찾을 수 없음")
+    })
+    @GetMapping("/progress")
+    public ResponseEntity<ApiResponse<TodoProgressResponse>> getTodoProgress(
+            @RequestParam Long memberId,
+            @RequestParam String date) {
+        try {
+            TodoProgressResponse progressResponse = todoProgressService.getTodoProgress(memberId, LocalDate.parse(date));
+            return ResponseEntity.ok(ApiResponse.onSuccess(progressResponse));
         } catch (TodoNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));
