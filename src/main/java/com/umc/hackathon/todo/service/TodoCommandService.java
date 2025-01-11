@@ -44,4 +44,15 @@ public class TodoCommandService {
         // Todo 삭제
         todoRepository.deleteById(id);
     }
+
+    public TodoResponse updateTodoStatus(Long todoId, boolean status) {
+        Todo todo = todoRepository.findById(todoId)
+                .orElseThrow(() -> new TodoNotFoundException("해당 투두를 찾을 수 없습니다."));
+
+        todo.setStatus(status);
+        todoRepository.save(todo);
+
+        return new TodoResponse(todo.getId(), todo.getMemberId(), todo.getDescription(),
+                todo.isStatus(), todo.getCreatedAt(), todo.getUpdatedAt());
+    }
 }
