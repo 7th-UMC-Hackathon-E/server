@@ -96,7 +96,7 @@ public class RoomService {
                 .indexOf(userId) + 1;
         roomDTO.setUsers(users);
         roomDTO.setNumberOfPeople(users.size());
-        roomDTO.setTodos(todoRepository.findByMemberIdAndDate(userId, LocalDate.now()));
+        roomDTO.setTodos(todoRepository.findByMemberIdAndCreatedAtDate(userId, LocalDate.now()));
         roomDTO.setRanking(rank);
 
         return roomDTO;
