@@ -1,6 +1,7 @@
 package com.umc.hackathon.todo.controller;
 
 import com.umc.hackathon.global.apiPayload.ApiResponse;
+import com.umc.hackathon.todo.dto.TodoListResponse;
 import com.umc.hackathon.todo.dto.TodoRequest;
 import com.umc.hackathon.todo.dto.TodoResponse;
 import com.umc.hackathon.todo.exception.TodoNotFoundException;
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/todos")
@@ -50,6 +53,26 @@ public class TodoController {
         try {
             TodoResponse todoResponse = todoQueryService.getTodoById(todoId);
             return ResponseEntity.ok(ApiResponse.onSuccess(todoResponse));
+        } catch (TodoNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));
+        }
+    }
+
+    @Operation(summary = "투두 목록 조회", description = "Todo 목록을 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "투두 등록 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "잘못된 요청 데이터")
+    })
+    @GetMapping("/todos")
+    public ResponseEntity<ApiResponse<List<TodoListResponse>>> getTodosByDateAndMemberId(
+            @RequestParam Long memberId,
+            @RequestParam String date) {
+        try {
+            // 서비스 레벨에서 투두 목록을 조회
+            List<TodoListResponse> todoListResponse = todoQueryService.getTodosByDateAndMemberId(memberId, date);
+
+            return ResponseEntity.ok(ApiResponse.onSuccess(todoListResponse));
         } catch (TodoNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));

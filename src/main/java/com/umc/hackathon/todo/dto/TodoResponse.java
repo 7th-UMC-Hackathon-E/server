@@ -9,4 +9,5 @@ public record TodoResponse(
         boolean status,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
-) {}
+) {
+}
