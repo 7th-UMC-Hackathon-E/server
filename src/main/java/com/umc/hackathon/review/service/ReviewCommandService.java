@@ -11,6 +11,7 @@ import com.umc.hackathon.room.repository.UserStudyRepository;
 import com.umc.hackathon.user.entity.User;
 import com.umc.hackathon.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReviewCommandService {
@@ -59,5 +60,13 @@ public class ReviewCommandService {
                 review.getCreatedAt(),
                 review.getUpdatedAt()
         );
+    }
+
+    @Transactional
+    public void deleteReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("해당 리뷰가 없습니다. -> " + reviewId));
+
+        reviewRepository.delete(review);
     }
 }

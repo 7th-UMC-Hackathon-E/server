@@ -35,4 +35,5 @@ public class User extends BaseEntity {
     public void setZodiac(Zodiac zodiac) {
         this.zodiac = zodiac;
     }
+
 }
