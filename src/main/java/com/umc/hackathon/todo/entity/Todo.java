@@ -5,14 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
+import com.umc.hackathon.global.baseEntity.BaseEntity;
 
 @Entity
-@Setter
 @Getter
-public class Todo {
+public class Todo extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +18,16 @@ public class Todo {
     private Long memberId;
     private String description;
     private boolean status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }

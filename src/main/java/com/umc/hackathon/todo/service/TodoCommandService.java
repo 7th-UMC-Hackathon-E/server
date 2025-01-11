@@ -7,8 +7,6 @@ import com.umc.hackathon.todo.exception.TodoValidationException;
 import com.umc.hackathon.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 public class TodoCommandService {
 
@@ -27,8 +25,6 @@ public class TodoCommandService {
         todo.setMemberId(todoRequest.memberId());
         todo.setDescription(todoRequest.description());
         todo.setStatus(false); // 기본 상태는 false
-        todo.setCreatedAt(LocalDateTime.now());
-        todo.setUpdatedAt(LocalDateTime.now());
 
         Todo savedTodo = todoRepository.save(todo);
 
