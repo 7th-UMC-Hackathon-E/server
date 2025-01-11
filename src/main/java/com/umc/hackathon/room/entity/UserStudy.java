@@ -2,8 +2,10 @@ package com.umc.hackathon.room.entity;
 
 import com.umc.hackathon.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name="user_study")
 public class UserStudy {
     @Id
