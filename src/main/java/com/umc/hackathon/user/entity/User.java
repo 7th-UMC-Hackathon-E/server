@@ -1,6 +1,7 @@
 package com.umc.hackathon.user.entity;
 
 import com.umc.hackathon.global.baseEntity.BaseEntity;
+import com.umc.hackathon.room.entity.UserStudy;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -20,6 +21,8 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Zodiac zodiac;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private UserStudy userStudy;
 
     public void setName(String name) {
         this.name = name;
