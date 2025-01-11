@@ -17,4 +17,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     // FUNCTION('DATE', t.createdAt)은 데이터베이스에서 createdAt을 DATE 형식으로 변환하려는 함수
     @Query("SELECT t FROM Todo t WHERE t.memberId = :memberId AND FUNCTION('DATE', t.createdAt) = :date")
     List<Todo> findByMemberIdAndCreatedAtDate(@Param("memberId") Long memberId, @Param("date") LocalDate date);
+
+    // 특정 ID로 Todo 삭제
+    void deleteById(Long id);
 }
