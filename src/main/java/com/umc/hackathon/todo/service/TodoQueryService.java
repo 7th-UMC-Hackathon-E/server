@@ -1,6 +1,5 @@
 package com.umc.hackathon.todo.service;
 
-import com.umc.hackathon.global.apiPayload.ApiResponse;
 import com.umc.hackathon.todo.dto.TodoListResponse;
 import com.umc.hackathon.todo.dto.TodoResponse;
 import com.umc.hackathon.todo.entity.Todo;
