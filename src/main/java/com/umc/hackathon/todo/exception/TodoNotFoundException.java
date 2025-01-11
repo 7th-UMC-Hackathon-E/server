@@ -6,7 +6,5 @@ public class TodoNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public TodoNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    public TodoNotFoundException(String message, Throwable cause) { super(message, cause);}
 }

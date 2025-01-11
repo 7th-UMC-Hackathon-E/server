@@ -1,10 +1,7 @@
 package com.umc.hackathon.todo.controller;
 
 import com.umc.hackathon.global.apiPayload.ApiResponse;
-import com.umc.hackathon.todo.dto.TodoListResponse;
-import com.umc.hackathon.todo.dto.TodoProgressResponse;
-import com.umc.hackathon.todo.dto.TodoRequest;
-import com.umc.hackathon.todo.dto.TodoResponse;
+import com.umc.hackathon.todo.dto.*;
 import com.umc.hackathon.todo.exception.TodoNotFoundException;
 import com.umc.hackathon.todo.exception.TodoValidationException;
 import com.umc.hackathon.todo.service.TodoCommandService;
@@ -112,6 +109,24 @@ public class TodoController {
         try {
             TodoProgressResponse progressResponse = todoProgressService.getTodoProgress(memberId, LocalDate.parse(date));
             return ResponseEntity.ok(ApiResponse.onSuccess(progressResponse));
+        } catch (TodoNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));
+        }
+    }
+
+    @Operation(summary = "투두 상태 변경", description = "투두 항목의 상태를 완료로 변경합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "투두 상태 변경 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "투두 항목을 찾을 수 없음")
+    })
+    @PatchMapping("/{todoId}/status")
+    public ResponseEntity<ApiResponse<TodoResponse>> updateTodoStatus(
+            @PathVariable Long todoId,
+            @RequestBody TodoStatusUpdateRequest request) {
+        try {
+            TodoResponse todoResponse = todoCommandService.updateTodoStatus(todoId, request.status());
+            return ResponseEntity.ok(ApiResponse.onSuccess(todoResponse));
         } catch (TodoNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));
