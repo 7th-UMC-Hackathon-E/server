@@ -63,22 +63,29 @@ public class TodoController {
 
     @Operation(summary = "투두 목록 조회", description = "Todo 목록을 조회합니다.")
     @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "투두 등록 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "잘못된 요청 데이터")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "투두 등록 성공")
     })
     @GetMapping("/todos")
     public ResponseEntity<ApiResponse<List<TodoListResponse>>> getTodosByDateAndMemberId(
             @RequestParam Long memberId,
             @RequestParam String date) {
-        try {
             // 서비스 레벨에서 투두 목록을 조회
             List<TodoListResponse> todoListResponse = todoQueryService.getTodosByDateAndMemberId(memberId, date);
 
+
+//        // 투두가 없으면, 지정된 형식으로 빈 리스트 반환
+//        if (todoListResponse.isEmpty()) {
+//            TodoListResponse emptyTodoResponse = new TodoListResponse(memberId, date, new ArrayList<>());
+//            List<TodoListResponse> result = Collections.singletonList(emptyTodoResponse);
+//
+//            ApiResponse<List<TodoListResponse>> response = new ApiResponse<>(
+//                    true, "4230", "OK", result
+//            );
+//            return ResponseEntity.ok(response);
+//        }
+
+
             return ResponseEntity.ok(ApiResponse.onSuccess(todoListResponse));
-        } catch (TodoNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));
-        }
     }
 
     @Operation(summary = "투두 단일 삭제", description = "특정 ID를 가진 Todo를 삭제합니다.")

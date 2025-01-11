@@ -9,7 +9,9 @@ import com.umc.hackathon.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +45,13 @@ public class TodoQueryService {
         List<Todo> todos = todoRepository.findByMemberIdAndCreatedAtDate(memberId, localDate);
 
         if (todos.isEmpty()) {
-            throw new TodoNotFoundException("해당 날짜에 대한 투두가 없습니다.");
+            // 빈 TodoListResponse 객체 생성
+            TodoListResponse emptyTodoResponse = new TodoListResponse(
+                    memberId,
+                    localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    new ArrayList<>()
+            );
+            return List.of(emptyTodoResponse);  // 빈 리스트를 포함한 TodoListResponse 반환
         }
 
         // Todo를 DTO로 변환
@@ -63,7 +71,7 @@ public class TodoQueryService {
         // 여러 날짜가 포함될 수 있으므로 List<TodoListResponse>를 반환
         return List.of(new TodoListResponse(
                 memberId,
-                localDate,
+                localDate.format(DateTimeFormatter.ofPattern(String.valueOf(localDate))),
                 todoResponses
         ));
     }
