@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://hackothon-e-db.cj6koc6yqngh.ap-northeast-2.rds.amazonaws.com:3306/test
+    username: root
+    password: hackothon-e
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
