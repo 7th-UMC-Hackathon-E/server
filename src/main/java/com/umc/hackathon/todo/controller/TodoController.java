@@ -7,6 +7,8 @@ import com.umc.hackathon.todo.exception.TodoNotFoundException;
 import com.umc.hackathon.todo.exception.TodoValidationException;
 import com.umc.hackathon.todo.service.TodoCommandService;
 import com.umc.hackathon.todo.service.TodoQueryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,26 +25,34 @@ public class TodoController {
         this.todoQueryService = todoQueryService;
     }
 
+    @Operation(summary = "투두 등록", description = "새로운 Todo를 생성합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "투두 등록 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
+    })
     @PostMapping
-    public ResponseEntity<ApiResponse<TodoResponse>> createTodo(@RequestBody TodoRequest todoRequest) {
+    public ApiResponse<?> createTodo(@RequestBody TodoRequest todoRequest) {
         try {
             TodoResponse todoResponse = todoCommandService.createTodo(todoRequest);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(true, "2000", "OK", todoResponse));
+            return ApiResponse.onSuccess(todoResponse); // 성공 응답 반환
         } catch (TodoValidationException ex) {
-            return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(false, "4001", ex.getMessage(), null));
+            return ApiResponse.onFailure("TODO_VALIDATION_FAILED", ex.getMessage(), null); // 실패 응답 반환
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<TodoResponse>> getTodoById(@PathVariable Long id) {
+    @Operation(summary = "투두 단일 조회", description = "단일 Todo를 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "투두 등록 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "잘못된 요청 데이터")
+    })
+    @GetMapping("/{todoId}")
+    public ResponseEntity<ApiResponse<TodoResponse>> getTodoById(@PathVariable Long todoId) {
         try {
-            TodoResponse todoResponse = todoQueryService.getTodoById(id);
-            return ResponseEntity.ok(new ApiResponse<>(true, "2000", "OK", todoResponse));
+            TodoResponse todoResponse = todoQueryService.getTodoById(todoId);
+            return ResponseEntity.ok(ApiResponse.onSuccess(todoResponse));
         } catch (TodoNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(false, "4002", ex.getMessage(), null));
+                    .body(ApiResponse.onFailure("TODO_NOT_FOUND", ex.getMessage(), null));
         }
     }
 }
